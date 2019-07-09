@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Policies\ImagePolicy;
 use App\Image;
+use Illuminate\Support\Facades\File;
 
 class ImagesController extends Controller
 {
@@ -63,9 +64,9 @@ class ImagesController extends Controller
     {
         $this->authorize('delete', $image);
 
-        $image->delete();
+        //File::delete($image->path);
 
-        return redirect('/home');
+        //$image->delete();
     }
 
     private function storeImage($image)

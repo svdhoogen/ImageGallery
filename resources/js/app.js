@@ -27,6 +27,14 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app',
+window.Event = new Vue();
+
+import userposts from './components/user-posts';
+
+new Vue({
+    el: '#user-panel',
+
+    components: {
+        userposts
+    }
 });
