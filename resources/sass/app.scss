@@ -1,0 +1,31 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+#img-logo {
+    width: 56px;
+    height: 56px;
+}
+
+body {
+    background-color: #f8f9fa;
+}
+
+body p, h1, h2, h3, h4, h5, h6, textarea, input, label{
+    font-family: verdana;
+}
+
+.hidden {
+    display: none;
+}
+
+.flex-item {
+    max-width: 100%;
+    max-height: 300px;
+    height: auto;
+}
