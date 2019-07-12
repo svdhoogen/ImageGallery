@@ -31,17 +31,6 @@ window.Event = new Vue();
 
 import userposts from './components/user-posts';
 
-/*class Post {
-    constructor(data) {
-        this.originalData = data;
-
-        for(let post in data) {
-            this[post] = data[post];
-            console.log(this[post]);
-        }
-    }
-}*/
-
 new Vue({
     el: '#user-panel',
 
@@ -50,16 +39,11 @@ new Vue({
     },
 
     data: {
+        showBtn: true,
         hadPosts: false,
         noPosts: false,
         posts: [],
         page: 1
-    },
-
-    computed: {
-        hasPosts() {
-            return this.noPosts === this.hadPosts;
-        }
     },
 
     methods: {
@@ -68,13 +52,13 @@ new Vue({
 
             axios.get('/home/posts?page=' + this.page)
                 .then(response => {
-                    if (response.data.data.length === 0) {
+                    $.each(response.data.data, function (key, value) {
+                        handler.posts.push(value);
+                    });
+
+                    if(response.data.last_page <= this.page) {
                         handler.endOfPosts();
                     } else {
-                        $.each(response.data.data, function (key, value) {
-                            handler.posts.push(value);
-                        });
-
                         this.page++;
                     }
                 });
@@ -86,6 +70,8 @@ new Vue({
             } else {
                 this.hadPosts = true;
             }
+
+            this.showBtn = false
         },
 
         loadPosts() {

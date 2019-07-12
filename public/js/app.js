@@ -254,32 +254,17 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 
 window.Event = new Vue();
 
-/*class Post {
-    constructor(data) {
-        this.originalData = data;
-
-        for(let post in data) {
-            this[post] = data[post];
-            console.log(this[post]);
-        }
-    }
-}*/
-
 new Vue({
   el: '#user-panel',
   components: {
     userposts: _components_user_posts__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: {
+    showBtn: true,
     hadPosts: false,
     noPosts: false,
     posts: [],
     page: 1
-  },
-  computed: {
-    hasPosts: function hasPosts() {
-      return this.noPosts === this.hadPosts;
-    }
   },
   methods: {
     infiniteHandler: function infiniteHandler() {
@@ -287,12 +272,13 @@ new Vue({
 
       var handler = this;
       axios.get('/home/posts?page=' + this.page).then(function (response) {
-        if (response.data.data.length === 0) {
+        $.each(response.data.data, function (key, value) {
+          handler.posts.push(value);
+        });
+
+        if (response.data.last_page <= _this.page) {
           handler.endOfPosts();
         } else {
-          $.each(response.data.data, function (key, value) {
-            handler.posts.push(value);
-          });
           _this.page++;
         }
       });
@@ -303,6 +289,8 @@ new Vue({
       } else {
         this.hadPosts = true;
       }
+
+      this.showBtn = false;
     },
     loadPosts: function loadPosts() {
       if (this.hadPosts === false && this.noPosts === false) {

@@ -15,7 +15,7 @@
 
                     <p class="text-dark">Your posts will be listed here.</p>
 
-                    <div id="user-panel" >
+                    <div id="user-panel">
                         <userposts v-if="post" v-for="post in posts" :path="post.path" :title="post.title" :id="post.id">
                             {{--path="{{ asset($image->path) }}" title="{{ $image->title }}" id="{{ $image->id }}"--}}
 
@@ -23,7 +23,7 @@
                             @csrf
                         </userposts>
 
-                        <button class="btn btn-primary btn-block" @click="loadPosts" v-if="hasPosts">Load posts</button>
+                        <button class="btn btn-primary btn-block" @click="loadPosts" v-if="showBtn">Load posts</button>
 
                         <p v-if="noPosts" class="text-dark"> You have no posts yet,
                             <a href="/images/create">upload an image!</a>
