@@ -25,11 +25,12 @@ body p, h1, h2, h3, h4, h5, h6, textarea, input, label{
 }
 
 .flex-item {
-    max-width: 100%;
-    max-height: 300px;
-    height: auto;
+    max-width: 100%; // Allows image of any size as long as it fits inside of the window.
+    max-height: 300px; // Allows image to take up at most 300 pixels, it will resize and maintain aspect ratio.
+    height: auto; // Auto resize based on width.
 }
 
+// Fade-out animation for deleting posts on user home.
 .fade-enter-active, .fade-leave-active {
     transition: opacity .5s;
 }

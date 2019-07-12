@@ -14,7 +14,7 @@
             </form>
 
             <p v-if="errors" class="text-danger">{{ errors.message }}</p>
-            <div class="clearfix"></div>s
+            <div class="clearfix"></div>
         </div>
     </transition>
 </template>
@@ -26,14 +26,14 @@
         props: {
             path: String,
             title: String,
-            id: String,
+            id: Number,
         },
 
         data() {
             return {
                 visible: true,
                 submitted: false,
-                errors: ''
+                errors: '',
             }
         },
 
@@ -42,21 +42,19 @@
                 this.submitted = true;
 
                 axios.delete(url)
-                    .then(response => {
-                        this.visible = false;
-                        console.log(response);
-                        console.log('Deleted image at: ' + url);
-                    })
-                    .catch(errors => {
-                        this.submitted = false;
-                        this.errors = errors.response.data;
-                        console.log(this.errors)
-                    })
+                    .then(this.onSuccess())
+                    .catch(error => this.onFail(error))
+            },
+
+            onSuccess() {
+                this.visible = false;
+                Event.$emit('deletedPost');
+            },
+
+            onFail(error) {
+                this.submitted = false;
+                this.errors = error.response.data;
             }
         }
     }
 </script>
-
-<style scoped>
-
-</style>

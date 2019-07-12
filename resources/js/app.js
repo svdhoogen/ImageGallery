@@ -31,10 +31,80 @@ window.Event = new Vue();
 
 import userposts from './components/user-posts';
 
+/*class Post {
+    constructor(data) {
+        this.originalData = data;
+
+        for(let post in data) {
+            this[post] = data[post];
+            console.log(this[post]);
+        }
+    }
+}*/
+
 new Vue({
     el: '#user-panel',
 
     components: {
         userposts
-    }
+    },
+
+    data: {
+        hadPosts: false,
+        noPosts: false,
+        posts: [],
+        page: 1
+    },
+
+    computed: {
+        hasPosts() {
+            return this.noPosts === this.hadPosts;
+        }
+    },
+
+    methods: {
+        infiniteHandler() {
+            let handler = this;
+
+            axios.get('/home/posts?page=' + this.page)
+                .then(response => {
+                    if (response.data.data.length === 0) {
+                        handler.endOfPosts();
+                    } else {
+                        $.each(response.data.data, function (key, value) {
+                            handler.posts.push(value);
+                        });
+
+                        this.page++;
+                    }
+                });
+        },
+
+        endOfPosts() {
+            if (this.posts[0] === false) {
+                this.noPosts = true;
+            } else {
+                this.hadPosts = true;
+            }
+        },
+
+        loadPosts() {
+            if (this.hadPosts === false && this.noPosts === false) {
+                this.infiniteHandler();
+            }
+        },
+
+        onScroll() {
+            window.onscroll = () => {
+                if (window.scrollY + window.innerHeight > document.body.scrollHeight - 1) {
+                    this.loadPosts();
+                }
+            }
+        },
+    },
+
+    mounted() {
+        this.onScroll();
+        this.loadPosts();
+    },
 });
