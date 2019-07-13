@@ -21,7 +21,7 @@
 
 <script>
     export default {
-        name: "userposts",
+        name: "homepost",
 
         props: {
             path: String,

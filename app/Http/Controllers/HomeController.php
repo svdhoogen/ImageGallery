@@ -27,9 +27,23 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function posts()
+    public function ownerPosts()
     {
         $data = Image::select('path', 'title', 'id')->where('owner_id', auth()->id())->paginate(5);
+
+        return $data;
+    }
+
+    public function randomPosts()
+    {
+        $data = Image::select('path', 'title', 'id')->random()->paginate(30);
+
+        return $data;
+    }
+
+    public function latestPosts()
+    {
+        $data = Image::select('path', 'title', 'id')->latest()->paginate(30);
 
         return $data;
     }
