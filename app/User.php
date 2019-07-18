@@ -41,4 +41,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Image::class, 'owner_id');
     }
+
+    public function comments() {
+        return $this->hasMany(Comment::class, 'owner_id');
+    }
 }

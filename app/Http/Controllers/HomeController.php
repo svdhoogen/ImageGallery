@@ -29,7 +29,7 @@ class HomeController extends Controller
 
     public function ownerPosts()
     {
-        $data = Image::select('path', 'title', 'id')->where('owner_id', auth()->id())->paginate(5);
+        $data = Image::select('path', 'title', 'id', 'created_at')->latest()->where('owner_id', auth()->id())->paginate(5);
 
         return $data;
     }

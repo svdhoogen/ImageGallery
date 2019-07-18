@@ -1,11 +1,13 @@
 <template>
     <transition name="fade">
         <div v-if="visible" class="border mb-3 p-2">
-            <div class="float-left">
-                <img :src="path" class="m-1" width="152" :alt="title">
-            </div>
+            <a :href="'/images/' + id" class="m-1 float-left homepost-imagediv">
+                <img :src="path" class="homepost-image" :alt="title">
+            </a>
 
             <p class="text-dark">{{ title }}</p>
+
+            <p class="text-muted">Uploaded on: {{ date }}</p>
 
             <form method="post" @submit.prevent="onSubmit('/images/' + id)">
                 <slot></slot>
@@ -27,6 +29,7 @@
             path: String,
             title: String,
             id: Number,
+            date: String,
         },
 
         data() {
@@ -39,11 +42,13 @@
 
         methods: {
             onSubmit(url) {
-                this.submitted = true;
+                if(confirm("Are you sure you want to delete this image? This cannot be undone.")) {
+                    this.submitted = true;
 
-                axios.delete(url)
-                    .then(this.onSuccess())
-                    .catch(error => this.onFail(error))
+                    axios.delete(url)
+                        .then(this.onSuccess())
+                        .catch(error => this.onFail(error))
+                }
             },
 
             onSuccess() {

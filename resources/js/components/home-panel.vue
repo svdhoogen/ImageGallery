@@ -1,6 +1,6 @@
 <template>
     <div>
-        <homepost v-if="post" v-for="post in posts" :path="post.path" :title="post.title" :id="post.id">
+        <homepost v-if="post" v-for="post in posts" :key="post.id" :path="post.path" :title="post.title" :id="post.id" :date="post.created_at">
             <slot></slot>
         </homepost>
 

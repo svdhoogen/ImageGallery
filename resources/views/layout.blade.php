@@ -13,7 +13,9 @@
     <nav class="navbar col-md navbar-dark bg-dark navbar-expand-lg sticky-top mb-2">
         <div class="container">
             <!-- Site logo/ brand -->
-            <img src="{{ asset('image/site/ig_logo.png') }}" class="float-left mr-3" id="img-logo" alt="IG logo">
+            <a href="/images">
+                <img src="{{ asset('image/site/ig_logo.png') }}" class="float-left mr-2" id="img-logo" alt="IG logo">
+            </a>
             <a class="navbar-brand" href="/images">Image Gallery</a>
 
             <!-- Toggler/collapsibe Button -->

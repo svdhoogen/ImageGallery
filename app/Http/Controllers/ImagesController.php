@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Policies\ImagePolicy;
 use App\Image;
+use App\Comment;
 use Illuminate\Support\Facades\File;
 
 class ImagesController extends Controller
@@ -30,15 +31,17 @@ class ImagesController extends Controller
             'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:4096']
         ]);
 
-        $attributes['owner_id'] = auth()->id();
+        $image = new Image;
 
-        $attributes['title'] = $request->title;
+        $image['owner_id'] = auth()->id();
 
-        $attributes['path'] = $this->storeImage($request->file('image'));
+        $image['title'] = $request->title;
 
-        $image = Image::create($attributes);
+        $image['path'] = $image->storeImage($request->file('image'));
 
-        return redirect('/images/' . $image->id);
+        $image->save();
+
+        return $image->id;
     }
 
     public function show(Image $image)
@@ -46,37 +49,12 @@ class ImagesController extends Controller
         return view('images.show', compact('image'));
     }
 
-    /* No need for edit function right now.
-
-    public function edit($id)
-    {
-        return view('images.edit');
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    No need for edit function as of right now */
-
     public function destroy(Image $image)
     {
         $this->authorize('delete', $image);
 
-        //File::delete($image->path);
+        File::delete($image->path);
 
-        //$image->delete();
-    }
-
-    private function storeImage($image)
-    {
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
-
-        $imageDir = 'image/user';
-
-        $image->move($imageDir, $imageName);
-
-        return $imageDir . '/' . $imageName;
+        $image->delete();
     }
 }

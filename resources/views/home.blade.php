@@ -16,10 +16,10 @@
                     <p class="text-dark">Your posts will be listed here.</p>
 
                     <div id="root">
-                        <homePanel>
+                        <homepanel>
                             @method('delete')
                             @csrf
-                        </homePanel>
+                        </homepanel>
                     </div>
                 </div>
             </div>

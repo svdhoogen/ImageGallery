@@ -28,11 +28,13 @@ window.Vue = require('vue');
 window.Event = new Vue();
 
 import homepanel from './components/home-panel';
+import createpanel from './components/create-panel';
 
 new Vue({
     el: '#root',
 
     components: {
-        homepanel
+        homepanel,
+        createpanel
     },
 });

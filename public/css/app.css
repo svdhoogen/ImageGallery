@@ -11143,3 +11143,17 @@ label {
   opacity: 0;
 }
 
+.homepost-image {
+  max-width: 192px;
+  max-height: 192px;
+}
+
+.homepost-imagediv {
+  min-width: 192px;
+}
+
+.createpanel-image {
+  max-width: 256px;
+  max-height: 256px;
+}
+
