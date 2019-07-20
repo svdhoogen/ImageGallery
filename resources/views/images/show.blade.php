@@ -1,26 +1,36 @@
 @extends('layout')
 
 @section('content')
-    <div class="row">
-        <div class="col-12 mb-5">
-            <h1 class="text-primary mb-3">{{ $image->title }}</h1>
+    <div class="row justify-content-center" id="root">
+        <div class="col-12 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="text-primary card-title">{{ $image->title }}</h1>
+                    <p class="text-muted card-text">Uploaded by: {{ $image->owner->name }}</p>
 
-            <img src="{{ asset($image->path) }}" class="img-fluid mx-auto d-block" alt="Selected image">
+                    @if ($image->owner->id == auth()->id())
+                        <showdelete :id="{{ $image->id }}">
+                            @method('delete')
+                            @csrf
+                        </showdelete>
+                    @endif
+                </div>
 
-            <p class="text-dark">Uploaded by: {{ $image->owner->name }}</p>
-
-            @if ($image->owner->id == auth()->id())
-                <form method="post" action="/images/{{ $image->id }}">
-                    @method('delete')
-                    @csrf
-
-                    <button name="submit" class="btn btn-danger form-control">Delete post</button>
-                </form>
-            @endif
+                <img class="img-fluid mx-auto m-3" src="{{ asset($image->path) }}" alt="Selected image">
+            </div>
         </div>
 
-        <div class="col-12 mb-4">
+        <div class="col-10 mb-5">
 
+            @if (auth())
+                <showaddcomment :imageid="{{ $image->id }}">
+                    @csrf
+                </showaddcomment>
+            @else
+                <h4>Please <a href="/login">login</a> to post a comment!</h4>
+            @endif
+
+            <showcomments :imageid="{{ $image->id }}"></showcomments>
         </div>
     </div>
 @endsection

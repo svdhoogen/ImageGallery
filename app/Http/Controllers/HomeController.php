@@ -33,18 +33,4 @@ class HomeController extends Controller
 
         return $data;
     }
-
-    public function randomPosts()
-    {
-        $data = Image::select('path', 'title', 'id')->random()->paginate(30);
-
-        return $data;
-    }
-
-    public function latestPosts()
-    {
-        $data = Image::select('path', 'title', 'id')->latest()->paginate(30);
-
-        return $data;
-    }
 }

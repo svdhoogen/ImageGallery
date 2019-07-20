@@ -22,3 +22,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/home/ownerposts', 'HomeController@ownerposts');
+
+Route::get('/comments/{id}', 'CommentsController@getComments');
+
+Route::post('/comments', 'CommentsController@store');

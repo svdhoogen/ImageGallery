@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import homepost from './home-post';
+    import homepost from './post';
 
     export default {
         name: "homepanel",
@@ -43,7 +43,7 @@
             infiniteHandler() {
                 let handler = this;
 
-                axios.get('/home/ownerposts?count=5&page=' + this.page)
+                axios.get('/home/ownerposts?page=' + this.page)
                     .then(response => {
                         $.each(response.data.data, function (key, value) {
                             handler.posts.push(value);
