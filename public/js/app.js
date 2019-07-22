@@ -306,14 +306,17 @@ __webpack_require__.r(__webpack_exports__);
       var formData = new FormData();
       formData.append("comment", this.comment);
       formData.append("image_id", this.imageid);
-      axios.post('/comments', formData).then(this.onSuccess())["catch"](function (errors) {
+      axios.post('/comments', formData).then(function (response) {
+        return _this.onSuccess(response);
+      })["catch"](function (errors) {
         return _this.onFail(errors);
       });
     },
-    onSuccess: function onSuccess() {
+    onSuccess: function onSuccess(response) {
       this.submitted = false;
       this.comment = '';
       this.errors = [];
+      Event.$emit('addComment', response);
     },
     onFail: function onFail(errors) {
       this.submitted = false;
@@ -418,15 +421,31 @@ __webpack_require__.r(__webpack_exports__);
           _this2.loadPosts();
         }
       };
+    },
+    addComment: function addComment(data) {
+      var _this3 = this;
+
+      axios.get('/comments/single/' + data.data).then(function (response) {
+        var newComments = [];
+        console.log(response.data);
+        newComments.push(response.data);
+        $.each(_this3.comments, function (key, value) {
+          newComments.push(value);
+        });
+        console.log(newComments);
+        _this3.comments = [];
+        _this3.comments = newComments;
+      });
     }
   },
   mounted: function mounted() {
-    var _this3 = this;
+    var _this4 = this;
 
     this.loadPosts();
     setTimeout(function () {
-      return _this3.onScroll();
+      return _this4.onScroll();
     }, 100);
+    Event.$on('addComment', this.addComment);
   }
 });
 
@@ -1045,7 +1064,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_images_create_panel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/images/create/panel */ "./resources/js/components/images/create/panel.vue");
 /* harmony import */ var _components_images_show_delete__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/images/show/delete */ "./resources/js/components/images/show/delete.vue");
 /* harmony import */ var _components_images_show_comments__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/images/show/comments */ "./resources/js/components/images/show/comments.vue");
-/* harmony import */ var _components_images_show_add_comment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/images/show/add-comment */ "./resources/js/components/images/show/add-comment.vue");
+/* harmony import */ var _components_images_show_add_comment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/images/show/add-comment */ "./resources/js/components/images/show/add-comment.vue");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -1083,7 +1102,7 @@ new Vue({
     createpanel: _components_images_create_panel__WEBPACK_IMPORTED_MODULE_1__["default"],
     showdelete: _components_images_show_delete__WEBPACK_IMPORTED_MODULE_2__["default"],
     showcomments: _components_images_show_comments__WEBPACK_IMPORTED_MODULE_3__["default"],
-    showaddcomment: _components_images_show_add_comment__WEBPACK_IMPORTED_MODULE_5__["default"]
+    showaddcomment: _components_images_show_add_comment__WEBPACK_IMPORTED_MODULE_4__["default"]
   }
 });
 

@@ -25,4 +25,6 @@ Route::get('/home/ownerposts', 'HomeController@ownerposts');
 
 Route::get('/comments/{id}', 'CommentsController@getComments');
 
+Route::get('/comments/single/{id}', 'CommentsController@getComment');
+
 Route::post('/comments', 'CommentsController@store');

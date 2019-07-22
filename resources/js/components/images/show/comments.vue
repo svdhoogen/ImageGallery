@@ -59,11 +59,32 @@
                     }
                 }
             },
+
+            addComment(data) {
+                axios.get('/comments/single/' + data.data)
+                    .then(response => {
+                        let newComments = [];
+
+                        console.log(response.data);
+                        newComments.push(response.data);
+
+                        $.each(this.comments, function (key, value) {
+                            newComments.push(value);
+                        });
+
+                        console.log(newComments);
+
+                        this.comments = [];
+
+                        this.comments = newComments;
+                    });
+            }
         },
 
         mounted() {
             this.loadPosts();
             setTimeout(() => this.onScroll(), 100);
+            Event.$on('addComment', this.addComment);
         },
     }
 </script>

@@ -39,14 +39,16 @@
                 formData.append("image_id", this.imageid);
 
                 axios.post('/comments', formData)
-                    .then(this.onSuccess())
+                    .then(response => this.onSuccess(response))
                     .catch(errors => this.onFail(errors));
             },
 
-            onSuccess() {
+            onSuccess(response) {
                 this.submitted = false;
                 this.comment = '';
                 this.errors = [];
+
+                Event.$emit('addComment', response)
             },
 
             onFail(errors) {

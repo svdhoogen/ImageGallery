@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Comment;
 use App\Image;
+use App\User;
 
 class CommentsController extends Controller
 {
@@ -16,20 +17,21 @@ class CommentsController extends Controller
         return $data;
     }
 
+    public function getComment($commentId) {
+        $data = Comment::with('owner')
+            ->select('comment', 'id', 'created_at', 'owner_id')
+            ->where('id', $commentId)->get();
+
+        return $data[0];
+    }
+
     public function store(Request $request) {
-        request()->validate([
-            'comment' => ['required', 'min:3', 'max:255:'],
-            'image_id' => ['required', 'numeric'],
-        ]);
+        $comment = new Comment;
 
-        $comment = new comment;
-
-        $comment['owner_id'] = auth()->id();
-
-        $comment['image_id'] = $request->image_id;
-
-        $comment['comment'] = $request->comment;
+        $comment = $comment->prepareComment($request);
 
         $comment->save();
+
+        return $comment->id;
     }
 }
