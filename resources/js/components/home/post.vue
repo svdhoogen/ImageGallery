@@ -46,7 +46,7 @@
                     this.submitted = true;
 
                     axios.delete(url)
-                        .then(this.onSuccess())
+                        .then(this.onSuccess)
                         .catch(error => this.onFail(error))
                 }
             },
@@ -57,6 +57,7 @@
             },
 
             onFail(error) {
+                this.visible = true;
                 this.submitted = false;
                 this.errors = error.response.data;
             }

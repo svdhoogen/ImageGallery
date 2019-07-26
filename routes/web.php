@@ -28,3 +28,5 @@ Route::get('/comments/{id}', 'CommentsController@getComments');
 Route::get('/comments/single/{id}', 'CommentsController@getComment');
 
 Route::post('/comments', 'CommentsController@store');
+
+Route::delete('/comments/{id}', 'CommentsController@destroy');

@@ -22,15 +22,21 @@
 
         <div class="col-10 mb-5">
 
-            @if (auth())
+            @if (auth()->user())
                 <showaddcomment :imageid="{{ $image->id }}">
                     @csrf
                 </showaddcomment>
+
+                <showcomments :imageid="{{ $image->id }}" :userid="{{ auth()->id() }}">
+                    @method('delete')
+                    @csrf
+                </showcomments>
             @else
                 <h4>Please <a href="/login">login</a> to post a comment!</h4>
+
+                <showcomments :imageid="{{ $image->id }}" :userid="-1"></showcomments>
             @endif
 
-            <showcomments :imageid="{{ $image->id }}"></showcomments>
         </div>
     </div>
 @endsection

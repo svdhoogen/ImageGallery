@@ -145,7 +145,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (confirm("Are you sure you want to delete this image? This cannot be undone.")) {
         this.submitted = true;
-        axios["delete"](url).then(this.onSuccess())["catch"](function (error) {
+        axios["delete"](url).then(this.onSuccess)["catch"](function (error) {
           return _this.onFail(error);
         });
       }
@@ -155,6 +155,7 @@ __webpack_require__.r(__webpack_exports__);
       Event.$emit('deletedPost');
     },
     onFail: function onFail(error) {
+      this.visible = true;
       this.submitted = false;
       this.errors = error.response.data;
     }
@@ -346,12 +347,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "comment",
+  name: "showcomment",
   props: {
     name: String,
     body: String,
-    date: String
+    date: String,
+    userid: Number,
+    ownerid: Number,
+    id: Number
+  },
+  data: function data() {
+    return {
+      visible: true,
+      submitted: false,
+      errors: ''
+    };
+  },
+  computed: {
+    isOwner: function isOwner() {
+      return this.userid === this.ownerid;
+    }
+  },
+  methods: {
+    onSubmit: function onSubmit(url) {
+      var _this = this;
+
+      if (confirm("Are you sure you want to delete this image? This cannot be undone.")) {
+        this.submitted = true;
+        axios["delete"](url).then(this.onSuccess)["catch"](function (error) {
+          return _this.onFail(error);
+        });
+      }
+    },
+    onSuccess: function onSuccess() {
+      this.visible = false;
+    },
+    onFail: function onFail(error) {
+      this.submitted = false;
+      this.errors = error.response.data;
+    }
   }
 });
 
@@ -375,19 +418,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'showdelete',
+  name: 'showcomments',
   components: {
     comment: _comment__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: {
-    imageid: Number
+    imageid: Number,
+    userid: Number
   },
   data: function data() {
     return {
       comments: [],
       page: 1,
+      commentId: -1,
       moreComments: true
     };
   },
@@ -395,18 +443,25 @@ __webpack_require__.r(__webpack_exports__);
     infiniteHandler: function infiniteHandler() {
       var _this = this;
 
-      var handler = this;
-      axios.get('/comments/' + this.imageid + '?page=' + this.page).then(function (response) {
-        $.each(response.data.data, function (key, value) {
-          handler.comments.push(value);
-        });
-
-        if (response.data.last_page <= _this.page) {
-          _this.moreComments = false;
-        } else {
-          _this.page++;
-        }
+      axios.get('/comments/' + this.imageid + '?page=' + this.page + '&commentId=' + this.commentId).then(function (response) {
+        return _this.onSuccess(response);
       });
+    },
+    onSuccess: function onSuccess(response) {
+      var handler = this;
+      $.each(response.data.data, function (key, value) {
+        handler.comments.push(value);
+      });
+
+      if (response.data.last_page <= this.page) {
+        this.moreComments = false;
+      } else {
+        this.page++;
+
+        if (this.commentId === -1) {
+          this.commentId = handler.comments[0].id;
+        }
+      }
     },
     loadPosts: function loadPosts() {
       if (this.moreComments === true) {
@@ -422,30 +477,33 @@ __webpack_require__.r(__webpack_exports__);
         }
       };
     },
-    addComment: function addComment(data) {
+    appendComment: function appendComment(data) {
       var _this3 = this;
 
       axios.get('/comments/single/' + data.data).then(function (response) {
-        var newComments = [];
-        console.log(response.data);
-        newComments.push(response.data);
-        $.each(_this3.comments, function (key, value) {
-          newComments.push(value);
-        });
-        console.log(newComments);
+        var handler = _this3;
+        var oldComments = _this3.comments;
         _this3.comments = [];
-        _this3.comments = newComments;
+
+        _this3.comments.push(response.data);
+
+        $.each(oldComments, function (key, value) {
+          handler.comments.push(value);
+        });
       });
+    },
+    mountComponent: function mountComponent() {
+      var _this4 = this;
+
+      this.loadPosts();
+      setTimeout(function () {
+        return _this4.onScroll();
+      }, 100);
+      Event.$on('addComment', this.appendComment);
     }
   },
   mounted: function mounted() {
-    var _this4 = this;
-
-    this.loadPosts();
-    setTimeout(function () {
-      return _this4.onScroll();
-    }, 100);
-    Event.$on('addComment', this.addComment);
+    this.mountComponent();
   }
 });
 
@@ -929,19 +987,55 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _c("div", { staticClass: "card-body" }, [
-      _c("h5", { staticClass: "card-title" }, [
-        _vm._v("Posted by: " + _vm._s(_vm.name))
-      ]),
-      _vm._v(" "),
-      _c("p", { staticClass: "card-text" }, [_vm._v(_vm._s(_vm.body))]),
-      _vm._v(" "),
-      _c("p", { staticClass: "card-text text-muted" }, [
-        _vm._v("posted on: " + _vm._s(_vm.date))
+  return _vm.visible
+    ? _c("div", { staticClass: "card" }, [
+        _c("div", { staticClass: "card-body" }, [
+          _c("h5", { staticClass: "card-title" }, [
+            _vm._v("Posted by: " + _vm._s(_vm.name))
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "card-text" }, [_vm._v(_vm._s(_vm.body))]),
+          _vm._v(" "),
+          _c("p", { staticClass: "card-text text-muted" }, [
+            _vm._v("posted on: " + _vm._s(_vm.date))
+          ]),
+          _vm._v(" "),
+          _vm.isOwner
+            ? _c(
+                "form",
+                {
+                  attrs: { method: "post" },
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.onSubmit("/comments/" + _vm.id)
+                    }
+                  }
+                },
+                [
+                  _vm._t("default"),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "submit", disabled: _vm.submitted }
+                    },
+                    [_vm._v("Delete comment")]
+                  ),
+                  _vm._v(" "),
+                  _vm.errors
+                    ? _c("p", { staticClass: "text-danger" }, [
+                        _vm._v(_vm._s(_vm.errors.message))
+                      ])
+                    : _vm._e()
+                ],
+                2
+              )
+            : _vm._e()
+        ])
       ])
-    ])
-  ])
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -970,15 +1064,23 @@ var render = function() {
     { staticClass: "mt-4" },
     [
       _vm._l(_vm.comments, function(comment) {
-        return _c("comment", {
-          key: comment.id,
-          staticClass: "mb-1",
-          attrs: {
-            name: comment.owner.name,
-            body: comment.comment,
-            date: comment.created_at
-          }
-        })
+        return _c(
+          "comment",
+          {
+            key: comment.id,
+            staticClass: "mb-1",
+            attrs: {
+              userid: _vm.userid,
+              ownerid: comment.owner.id,
+              name: comment.owner.name,
+              body: comment.comment,
+              date: comment.created_at,
+              id: comment.id
+            }
+          },
+          [_vm._t("default")],
+          2
+        )
       }),
       _vm._v(" "),
       _vm.moreComments
