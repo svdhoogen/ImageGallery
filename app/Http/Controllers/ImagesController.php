@@ -26,18 +26,7 @@ class ImagesController extends Controller
 
     public function store(Request $request)
     {
-        request()->validate([
-            'title' => ['required', 'min:3', 'max:255:'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:4096']
-        ]);
-
-        $image = new Image;
-
-        $image['owner_id'] = auth()->id();
-
-        $image['title'] = $request->title;
-
-        $image['path'] = $image->storeImage($request->file('image'));
+        $image = Image::prepareImage($request);
 
         $image->save();
 

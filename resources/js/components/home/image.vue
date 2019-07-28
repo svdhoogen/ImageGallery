@@ -23,7 +23,7 @@
 
 <script>
     export default {
-        name: "homepost",
+        name: "homeimage",
 
         props: {
             path: String,
@@ -53,7 +53,6 @@
 
             onSuccess() {
                 this.visible = false;
-                Event.$emit('deletedPost');
             },
 
             onFail(error) {

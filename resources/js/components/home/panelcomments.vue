@@ -1,34 +1,35 @@
 <template>
-    <div>
-        <homepost v-if="post" v-for="post in posts" :key="post.id" :path="post.path" :title="post.title" :id="post.id" :date="post.created_at">
+    <div v-if="visible">
+        <homecomment v-if="comment" v-for="comment in comments" :key="comment.id" :comment="comment.comment" :id="comment.id" :date="comment.created_at">
             <slot></slot>
-        </homepost>
+        </homecomment>
 
-        <button class="btn btn-primary btn-block" @click="loadPosts" v-if="showBtn">Load posts</button>
+        <button class="btn btn-primary btn-block" @click="loadPosts" v-if="showBtn">Load comments</button>
 
-        <p v-if="noPosts" class="text-dark"> You have no posts yet,
-            <a href="/images/create">upload an image!</a>
+        <p v-if="noPosts" class="text-dark"> You have no comments yet,
+            <a href="/comments/create">upload an comment!</a>
         </p>
 
-        <p v-if="hadPosts">You have no more posts left!</p>
+        <p v-if="hadPosts">You have no more comments left!</p>
     </div>
 </template>
 
 <script>
-    import homepost from './post';
+    import homecomment from './comment';
 
     export default {
-        name: "homepanel",
+        name: "homepanelcomments",
 
         components: {
-            homepost
+            homecomment
         },
 
         data() {
             return {
+                visible: false,
                 hadPosts: false,
                 noPosts: false,
-                posts: [],
+                comments: [],
                 page: 1
             }
         },
@@ -43,10 +44,10 @@
             infiniteHandler() {
                 let handler = this;
 
-                axios.get('/home/ownerposts?page=' + this.page)
+                axios.get('/home/ownercomments?page=' + this.page)
                     .then(response => {
                         $.each(response.data.data, function (key, value) {
-                            handler.posts.push(value);
+                            handler.comments.push(value);
                         });
 
                         if(response.data.last_page <= this.page) {
@@ -58,7 +59,7 @@
             },
 
             endOfPosts() {
-                if (this.posts[0] === false) {
+                if (this.comments[0] === false) {
                     this.noPosts = true;
                 } else {
                     this.hadPosts = true;
@@ -73,16 +74,27 @@
 
             onScroll() {
                 window.onscroll = () => {
-                    if (window.scrollY + window.innerHeight > document.body.scrollHeight - 1) {
+                    if (window.scrollY + window.innerHeight > document.body.scrollHeight - 1 && this.visible === true) {
                         this.loadPosts();
+                        console.log('loading comments!')
                     }
                 }
             },
+
+            showPanel() {
+                this.onScroll();
+                this.visible = true;
+            },
+
+            hidePanel() {
+                this.visible = false;
+            }
         },
 
         mounted() {
-            this.onScroll();
             this.loadPosts();
+            Event.$on('panelcomments', this.showPanel)
+            Event.$on('panelshide', this.hidePanel);
         },
     }
 </script>

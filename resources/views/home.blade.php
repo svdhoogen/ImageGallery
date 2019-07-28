@@ -3,8 +3,12 @@
 @section('content')
     <div class="row justify-content-center overflow-hidden">
         <div class="col-md-10">
-            <div class="card mb-3">
-                <div class="card-header">Dashboard</div>
+            <div class="card mb-3" id="root">
+                <div class="card-header">
+                    <h1>Dashboard</h1>
+
+                    <homepanelselect></homepanelselect>
+                </div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -13,14 +17,15 @@
                         </div>
                     @endif
 
-                    <p class="text-dark">Your posts will be listed here.</p>
+                    <homepanelimages>
+                        @method('delete')
+                        @csrf
+                    </homepanelimages>
 
-                    <div id="root">
-                        <homepanel>
-                            @method('delete')
-                            @csrf
-                        </homepanel>
-                    </div>
+                    <homepanelcomments>
+                        @method('delete')
+                        @csrf
+                    </homepanelcomments>
                 </div>
             </div>
         </div>

@@ -21,7 +21,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/home/ownerposts', 'HomeController@ownerposts');
+Route::get('/home/ownerimages', 'HomeController@ownerimages');
+
+Route::get('/home/ownercomments', 'HomeController@ownercomments');
 
 Route::get('/comments/{id}', 'CommentsController@getComments');
 

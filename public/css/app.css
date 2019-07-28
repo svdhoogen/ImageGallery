@@ -11157,3 +11157,17 @@ label {
   max-height: 256px;
 }
 
+.list-inline-active {
+  color: black !important;
+  cursor: default;
+}
+
+.list-inline-nonactive {
+  color: #6c757d !important;
+}
+
+.list-inline-nonactive:hover {
+  color: black !important;
+  cursor: pointer;
+}
+

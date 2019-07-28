@@ -1,31 +1,28 @@
 <template>
-    <div class="card" v-if="visible">
-        <div class="card-body">
-            <h5 class="card-title">Posted by: {{ name }}</h5>
-            <p class="card-text">{{ body }}</p>
-            <p class="card-text text-muted">posted on: {{ date }}</p>
+    <transition name="fade">
+        <div v-if="visible" class="border mb-3 p-2">
+            <p class="text-dark">{{ comment }}</p>
 
-            <form v-if="isOwner" method="post" @submit.prevent="onSubmit('/comments/' + id)">
+            <p class="text-muted">Uploaded on: {{ date }}</p>
+
+            <form method="post" @submit.prevent="onSubmit('/comments/' + id)">
                 <slot></slot>
 
-                <button class="btn btn-danger" type="submit" :disabled="submitted">Delete comment</button>
-
-                <p v-if="errors" class="text-danger">{{ errors.message }}</p>
+                <button name="submit" class="btn btn-danger btn-block" :disabled="submitted">Delete post</button>
             </form>
+
+            <p v-if="errors" class="text-danger">{{ errors.message }}</p>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script>
     export default {
-        name: "showcomment",
+        name: "homecomment",
 
         props: {
-            name: String,
-            body: String,
+            comment: String,
             date: String,
-            userid: Number,
-            ownerid: Number,
             id: Number,
         },
 
@@ -34,12 +31,6 @@
                 visible: true,
                 submitted: false,
                 errors: '',
-            }
-        },
-
-        computed: {
-            isOwner() {
-                return this.userid === this.ownerid;
             }
         },
 
@@ -59,6 +50,7 @@
             },
 
             onFail(error) {
+                this.visible = true;
                 this.submitted = false;
                 this.errors = error.response.data;
             }

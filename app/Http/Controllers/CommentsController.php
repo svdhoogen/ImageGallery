@@ -32,9 +32,7 @@ class CommentsController extends Controller
     }
 
     public function store(Request $request) {
-        $comment = new Comment;
-
-        $comment = $comment->prepareComment($request);
+        $comment = Comment::prepareComment($request);
 
         $comment->save();
 

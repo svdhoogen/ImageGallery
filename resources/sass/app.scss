@@ -51,3 +51,17 @@ body p, h1, h2, h3, h4, h5, h6, textarea, input, label{
     max-width: 256px;
     max-height: 256px;
 }
+
+.list-inline-active {
+    color: black !important;
+    cursor: default;
+}
+
+.list-inline-nonactive {
+    color: #6c757d !important;
+}
+
+.list-inline-nonactive:hover {
+    color: black !important;
+    cursor: pointer;
+}

@@ -17,7 +17,7 @@ class Comment extends Model
         return $this->belongsTo(Image::class, 'image_id');
     }
 
-    public function prepareComment(Request $request) {
+    public static function prepareComment(Request $request) {
         request()->validate([
             'comment' => ['required', 'min:3', 'max:255:'],
             'image_id' => ['required', 'numeric'],
