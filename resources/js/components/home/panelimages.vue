@@ -59,7 +59,7 @@
             },
 
             endOfPosts() {
-                if (this.images[0] === false) {
+                if (!this.images.length) {
                     this.noPosts = true;
                 } else {
                     this.hadPosts = true;

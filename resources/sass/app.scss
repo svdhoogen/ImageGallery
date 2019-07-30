@@ -54,7 +54,7 @@ body p, h1, h2, h3, h4, h5, h6, textarea, input, label{
 
 .list-inline-active {
     color: black !important;
-    cursor: default;
+    cursor: pointer;
 }
 
 .list-inline-nonactive {
@@ -64,4 +64,8 @@ body p, h1, h2, h3, h4, h5, h6, textarea, input, label{
 .list-inline-nonactive:hover {
     color: black !important;
     cursor: pointer;
+}
+
+.mw-35 {
+    max-width: 35%;
 }

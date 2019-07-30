@@ -27,24 +27,26 @@ window.Vue = require('vue');
 
 window.Event = new Vue();
 
-import homepanelselect from './components/home/panelselect';
+import panelselect from './components/panelselect';
 import homepanelimages from './components/home/panelimages';
 import homepanelcomments from './components/home/panelcomments';
 import createpanel from './components/images/create/panel';
 import showdelete from './components/images/show/delete';
 import showcomments from './components/images/show/comments';
 import showaddcomment from './components/images/show/add-comment';
+import indexpanelimages from './components/images/index/panelimages';
 
 new Vue({
     el: '#root',
 
     components: {
-        homepanelselect,
+        panelselect,
         homepanelimages,
         homepanelcomments,
         createpanel,
         showdelete,
         showcomments,
         showaddcomment,
+        indexpanelimages,
     },
 });

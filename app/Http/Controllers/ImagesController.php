@@ -46,4 +46,44 @@ class ImagesController extends Controller
 
         $image->delete();
     }
+
+    public function loadNew(Request $request) {
+        $keyId = $request->input('keyId');
+
+        if($keyId == -1) {
+            $keyId = Image::select('id')->latest('id')->first()->id;
+        }
+
+        $data['items'] = Image::select('id', 'path', 'title')->latest()->where('id', '<=', $keyId)->paginate(30);
+        $data['keyId'] = $keyId;
+
+        return $data;
+    }
+
+    public function loadRandom(Request $request) {
+        $keyId = $request->input('keyId');
+
+        if($keyId == -1) {
+            $keyId = Image::select('id')->latest('id')->first()->id;
+            session(['keyRand' => rand(0, 999999)]);
+        }
+
+        $data['items'] = Image::select('id', 'path', 'title')->inRandomOrder(session('keyRand'))->where('id', '<=', $keyId)->paginate(30);
+        $data['keyId'] = $keyId;
+
+        return $data;
+    }
+
+    public function loadOldest(Request $request) {
+        $keyId = $request->input('keyId');
+
+        if($keyId == -1) {
+            $keyId = Image::select('id')->oldest('id')->first()->id;
+        }
+
+        $data['items'] = Image::select('id', 'path', 'title')->oldest()->where('id', '>=', $keyId)->paginate(30);
+        $data['keyId'] = $keyId;
+
+        return $data;
+    }
 }

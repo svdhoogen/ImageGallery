@@ -87,16 +87,12 @@
                         });
                     });
             },
-
-            mountComponent() {
-                this.loadPosts();
-                setTimeout(() => this.onScroll(), 100);
-                Event.$on('addComment', this.appendComment);
-            }
         },
 
         mounted() {
-            this.mountComponent();
-        },
+            this.loadPosts();
+            setTimeout(() => this.onScroll(), 100);
+            Event.$on('addComment', this.appendComment);
+        }
     }
 </script>

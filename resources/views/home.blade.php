@@ -7,7 +7,10 @@
                 <div class="card-header">
                     <h1>Dashboard</h1>
 
-                    <homepanelselect></homepanelselect>
+                    <panelselect :eachitem="[
+                        { name: 'My images', isActive: true, eventName: 'panelimages', id: 0},
+                        { name: 'My comments', isActive: false, eventName: 'panelcomments', id: 1},
+                    ]"></panelselect>
                 </div>
 
                 <div class="card-body">

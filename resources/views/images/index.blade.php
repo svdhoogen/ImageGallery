@@ -6,12 +6,18 @@
 
 @section('content')
 
-    <div class="d-flex align-content-center flex-wrap justify-content-center" id="images">
-        @foreach ($image->inRandomOrder()->get('*')->take(30) as $image)
-            <a href="/images/{{ $image->id }}">
-                <img src="{{ asset($image->path) }}" class="flex-item p-2 mb-2 border" alt="{{ $image->title }}">
-            </a>
-        @endforeach
+    <div class="card" id="root">
+        <panelselect class="card-header" :eachitem="[
+            { name: 'New', isActive: true, eventName: 'loadnew', id: 0},
+            { name: 'Random', isActive: false, eventName: 'loadrandom', id: 1},
+            { name: 'Oldest', isActive: false, eventName: 'loadoldest', id: 2},
+        ]">
+            <h3>Choose filter</h3>
+        </panelselect>
+
+        <div class="clearfix"></div>
+
+        <indexpanelimages></indexpanelimages>
     </div>
 
 @endsection

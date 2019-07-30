@@ -1,20 +1,22 @@
 <template>
     <ul class="list-inline">
+        <slot></slot>
         <li class="list-inline-item" v-for="item in items" :class="{'list-inline-active': item.isActive, 'list-inline-nonactive': !item.isActive}"
-            @click="selectPanel(item.id)">{{ item.name }}</li>
+            @click="selectPanel(item.id)"><h3>{{ item.name }}</h3></li>
     </ul>
 </template>
 
 <script>
     export default {
-        name: "homepanelselect",
+        name: "panelselect",
+
+        props: {
+            eachitem: Array,
+        },
 
         data() {
             return {
-                items: [
-                    { name: 'My images', isActive: true, eventName: 'panelimages', id: 0},
-                    { name: 'My comments', isActive: false, eventName: 'panelcomments', id: 1},
-                ]
+                items: [],
             }
         },
 
@@ -29,6 +31,10 @@
                 Event.$emit('panelshide');
                 Event.$emit(this.items[id].eventName);
             }
+        },
+
+        mounted() {
+            this.items = this.eachitem;
         }
     }
 </script>

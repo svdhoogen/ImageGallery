@@ -3,13 +3,13 @@
         <slot></slot>
 
         <div class="form-group mb-2">
-            <h4 for="comment-form">Post a comment!</h4>
+            <h4 for="comment-form">Leave a comment!</h4>
             <input type="text" name="comment" v-model="comment" @keypress="errors.comment = ''" class="form-control" id="comment-form" placeholder="Enter comment" minlength="3" maxlength="255" required>
             <p class="text-danger" v-for="error in errors.comment">{{ error }}</p>
         </div>
 
         <div>
-            <button name="submit" class="btn btn-dark btn-block" :disabled="submitted">Create post</button>
+            <button name="submit" class="btn btn-dark btn-block" :disabled="submitted">Post comment</button>
         </div>
     </form>
 </template>

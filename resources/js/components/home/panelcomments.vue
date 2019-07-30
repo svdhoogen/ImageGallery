@@ -6,11 +6,9 @@
 
         <button class="btn btn-primary btn-block" @click="loadPosts" v-if="showBtn">Load comments</button>
 
-        <p v-if="noPosts" class="text-dark"> You have no comments yet,
-            <a href="/comments/create">upload an comment!</a>
-        </p>
+        <p v-if="noPosts" class="text-dark"> You have no comments yet!</p>
 
-        <p v-if="hadPosts">You have no more comments left!</p>
+        <p v-if="hadPosts">No more comments left!</p>
     </div>
 </template>
 
@@ -59,7 +57,7 @@
             },
 
             endOfPosts() {
-                if (this.comments[0] === false) {
+                if (!this.comments.length) {
                     this.noPosts = true;
                 } else {
                     this.hadPosts = true;

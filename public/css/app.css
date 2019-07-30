@@ -11159,7 +11159,7 @@ label {
 
 .list-inline-active {
   color: black !important;
-  cursor: default;
+  cursor: pointer;
 }
 
 .list-inline-nonactive {
@@ -11169,5 +11169,9 @@ label {
 .list-inline-nonactive:hover {
   color: black !important;
   cursor: pointer;
+}
+
+.mw-35 {
+  max-width: 35%;
 }
 

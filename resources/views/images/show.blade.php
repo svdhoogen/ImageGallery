@@ -7,6 +7,7 @@
                 <div class="card-body">
                     <h1 class="text-primary card-title">{{ $image->title }}</h1>
                     <p class="text-muted card-text">Uploaded by: {{ $image->owner->name }}</p>
+                    <img class="img-fluid mx-auto" src="{{ asset($image->path) }}" alt="Selected image">
 
                     @if ($image->owner->id == auth()->id())
                         <showdelete :id="{{ $image->id }}">
@@ -15,8 +16,6 @@
                         </showdelete>
                     @endif
                 </div>
-
-                <img class="img-fluid mx-auto m-3" src="{{ asset($image->path) }}" alt="Selected image">
             </div>
         </div>
 
